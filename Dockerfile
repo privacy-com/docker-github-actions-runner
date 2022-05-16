@@ -29,7 +29,11 @@ RUN mkdir ~/.ssh && ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
 # install missing package dependencies
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y python3.8-venv libmysqlclient21
+RUN apt-get update && apt-get install -y \
+  libmysqlclient21 \
+  nodejs \
+  npm \
+  python3.8-venv
 
 # TODO: remove this hack and install python more canonically, ideally
 RUN ln -s /usr/bin/python3 /usr/bin/python
