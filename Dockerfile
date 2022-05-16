@@ -25,11 +25,11 @@ RUN chmod +x /token.sh /entrypoint.sh
 
 ## Custom tweaks to fix build breaks - most are specific to the server repo
 # add github.com host keys
-RUN ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+RUN mkdir ~/.ssh && ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
 # install missing package dependencies
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y python3.8-venv
+RUN apt-get update && apt-get install -y python3.8-venv libmysqlclient21
 
 # TODO: remove this hack and install python more canonically, ideally
 RUN ln -s /usr/bin/python3 /usr/bin/python
