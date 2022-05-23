@@ -1,0 +1,6 @@
+# blacklist everything
+*
+
+!entrypoint.sh
+!install_actions.sh
+!token.sh
