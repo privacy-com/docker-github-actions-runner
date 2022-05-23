@@ -33,6 +33,7 @@ RUN apt-get update && apt-get install -y \
   libmysqlclient21 \
   nodejs \
   npm \
+  python3.8 \
   python3.8-venv
 
 # TODO: remove this hack and install python more canonically, ideally
