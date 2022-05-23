@@ -12,7 +12,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Pass a GitHub PAT in as an environment variable so the container can call out to git properly
 ARG REPO_ACCESS_GITHUB_PAT
-RUN git config -global url.https://foo:${REPO_ACCESS_GITHUB_PAT}@github.com/privacy-com.insteadOf https://github.com/privacy-com
+RUN git config --global url.https://foo:${REPO_ACCESS_GITHUB_PAT}@github.com/privacy-com.insteadOf https://github.com/privacy-com
 
 WORKDIR /actions-runner
 COPY install_actions.sh /actions-runner
