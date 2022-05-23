@@ -10,6 +10,10 @@ ARG TARGETPLATFORM
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+# Pass a GitHub PAT in as an environment variable so the container can call out to git properly
+ARG REPO_ACCESS_GITHUB_PAT
+RUN git config -global url.https://foo:${REPO_ACCESS_GITHUB_PAT}@github.com/privacy-com.insteadOf https://github.com/privacy-com
+
 WORKDIR /actions-runner
 COPY install_actions.sh /actions-runner
 
@@ -38,10 +42,6 @@ RUN apt-get update && apt-get install -y \
 
 # TODO: remove this hack and install python more canonically, ideally
 RUN ln -s /usr/bin/python3 /usr/bin/python
-
-# Pass a GitHub PAT in as an environment variable so the container can call out to git properly
-ARG REPO_ACCESS_GITHUB_PAT
-RUN git config 
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["./bin/Runner.Listener", "run", "--startuptype", "service"]
