@@ -38,5 +38,9 @@ RUN apt-get update && apt-get install -y \
 # TODO: remove this hack and install python more canonically, ideally
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
+# Pass a GitHub PAT in as an environment variable so the container can call out to git properly
+ARG GITHUB_REPO_READONLY_PAT
+RUN git config 
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["./bin/Runner.Listener", "run", "--startuptype", "service"]
