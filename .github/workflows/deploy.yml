@@ -26,7 +26,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: .
           secrets: |
             "REPO_ACCESS_GITHUB_PAT=${{ secrets.REPO_ACCESS_GITHUB_PAT }}"
           push: true
