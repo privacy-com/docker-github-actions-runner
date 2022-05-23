@@ -25,7 +25,7 @@ RUN chmod +x /token.sh /entrypoint.sh
 
 ## Custom tweaks to fix build breaks - most are specific to the server repo
 # add github.com host keys
-RUN mkdir ~/.ssh && ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 # install missing package dependencies
 ENV DEBIAN_FRONTEND=noninteractive
