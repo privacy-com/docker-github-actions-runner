@@ -32,6 +32,7 @@ jobs:
           context: .
           secrets: |
             "REPO_ACCESS_GITHUB_PAT=${{ secrets.REPO_ACCESS_GITHUB_PAT }}"
+          load: true
           push: true
           tags: |
             ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY }}:latest
