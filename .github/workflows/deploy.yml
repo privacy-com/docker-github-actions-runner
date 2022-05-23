@@ -9,9 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
       - uses: docker/setup-buildx-action@v2
         id: buildx
         with:
@@ -29,12 +26,12 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, tag, and push image to Amazon ECR
-        env:
-          REPO_ACCESS_GITHUB_PAT: ${{ secrets.REPO_ACCESS_GITHUB_PAT }}
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-          IMAGE_TAG: latest
-        run: |
-          DOCKER_BUILDKIT=1 docker build --secret id=REPO_ACCESS_GITHUB_PAT -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          secrets: |
+            "REPO_ACCESS_GITHUB_PAT=${{ secrets.REPO_ACCESS_GITHUB_PAT }}"
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY }}:latest
