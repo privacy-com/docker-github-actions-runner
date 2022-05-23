@@ -1,104 +1,35 @@
-name: GitHub Actions Runner in Docker - Latest
+name: Deploy to ECR
+
 on:
   push:
-    paths-ignore:
-      - Dockerfile.base
-      - README.md
-    branches:
-      - master
-      - develop
-  schedule:
-    - cron:  '59 23 * * *'
+    branches: [ master ]
 
 jobs:
-  ubuntu_latest_deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Copy Repo Files
-        uses: actions/checkout@master
-      - name: Get GitHub organization or user
-        run: echo 'ORG='$(dirname ${GITHUB_REPOSITORY}) >> $GITHUB_ENV
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile
-          pull: true
-          push: true
-          tags: ${{ env.ORG }}/github-runner:latest
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+  build:
+    name: Build Image
+      runs-on: ubuntu-latest
 
-  ubuntu_bionic_deploy:
-    runs-on: ubuntu-latest
     steps:
-      - name: Copy Repo Files
-        uses: actions/checkout@master
-      - name: Get GitHub organization or user
-        run: echo 'ORG='$(dirname ${GITHUB_REPOSITORY}) >> $GITHUB_ENV
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Copy Dockerfile
-        run: cp Dockerfile Dockerfile.ubuntu-bionic; sed -i.bak "s/FROM.*/FROM ${ORG}\/github-runner-base:ubuntu-bionic/" Dockerfile.ubuntu-bionic
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile.ubuntu-bionic
-          pull: true
-          push: true
-          tags: ${{env.ORG}}/github-runner:ubuntu-bionic
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
-  debian_deploy:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        release: [bullseye, sid]
-      fail-fast: false
-    steps:
-      - name: Copy Repo Files
-        uses: actions/checkout@master
-      - name: Get GitHub organization or user
-        run: echo 'ORG='$(dirname ${GITHUB_REPOSITORY}) >> $GITHUB_ENV
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Copy Dockerfile
-        run: cp Dockerfile Dockerfile.debian-${{ matrix.release }}; sed -i.bak "s/FROM.*/FROM ${ORG}\/github-runner-base:debian-${{ matrix.release }}/" Dockerfile.debian-${{ matrix.release }}
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile.debian-${{ matrix.release }}
-          pull: true
-          push: true
-          tags: ${{ env.ORG }}/github-runner:debian-${{ matrix.release }}
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+    - name: Check out code
+      uses: actions/checkout@v2
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: docker-github-actions-runner
+        IMAGE_TAG: latest
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
