@@ -25,6 +25,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       - 
         name: Docker meta
+        id: meta
         uses: docker/metadata-action@v4
         with:
           images: |
