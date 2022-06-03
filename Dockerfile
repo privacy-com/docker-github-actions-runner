@@ -12,7 +12,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Used to pass in secrets via Buildx
 RUN --mount=type=secret,id=REPO_ACCESS_GITHUB_PAT \
-  cat /run/secrets/REPO_ACCESS_GITHUB_PAT
+  export REPO_ACCESS_GITHUB_PAT=${cat /run/secrets/REPO_ACCESS_GITHUB_PAT}
 
 # Pass a GitHub PAT in as an environment variable so the container can call out to git properly
 RUN git config --global url.https://foo:${REPO_ACCESS_GITHUB_PAT}@github.com/privacy-com.insteadOf https://github.com/privacy-com
