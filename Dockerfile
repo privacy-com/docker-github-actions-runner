@@ -1,5 +1,5 @@
 # hadolint ignore=DL3007
-FROM myoung34/github-runner-base:latest
+FROM myoung34/github-runner-base:ubuntu-focal
 LABEL maintainer="walker@lithic.com"
 
 ENV AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
