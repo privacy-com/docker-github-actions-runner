@@ -15,6 +15,9 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN --mount=type=secret,id=REPO_ACCESS_GITHUB_PAT \
   git config --global url.https://foo:$(cat /run/secrets/REPO_ACCESS_GITHUB_PAT)@github.com/privacy-com.insteadOf https://github.com/privacy-com
 
+# Enable ephemeral runner
+ENV EPHEMERAL=1
+
 WORKDIR /actions-runner
 COPY install_actions.sh /actions-runner
 
@@ -46,7 +49,5 @@ RUN apt-get update && apt-get install -y \
 # TODO: remove this hack and install python more canonically, ideally
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# Enable ephemeral runner
-ENV EPHEMERAL=1
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["./bin/Runner.Listener", "run", "--startuptype", "service"]
