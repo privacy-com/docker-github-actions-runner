@@ -44,7 +44,8 @@ RUN apt-get update && apt-get install -y \
   nodejs \
   npm \
   python3.8 \
-  python3.8-venv
+  python3.8-venv \
+  uuid-runtime
 
 # TODO: remove this hack and install python more canonically, ideally
 RUN ln -s /usr/bin/python3 /usr/bin/python
