@@ -46,5 +46,7 @@ RUN apt-get update && apt-get install -y \
 # TODO: remove this hack and install python more canonically, ideally
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
+# Enable ephemeral runner
+ENV EPHEMERAL=1
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["./bin/Runner.Listener", "run", "--startuptype", "service"]
