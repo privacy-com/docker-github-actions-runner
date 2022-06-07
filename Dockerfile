@@ -11,11 +11,12 @@ ARG TARGETPLATFORM
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Used to pass in secrets via Buildx
-RUN --mount=type=secret,id=REPO_ACCESS_GITHUB_PAT \
-  cat /run/secrets/REPO_ACCESS_GITHUB_PAT
-
 # Pass a GitHub PAT in as an environment variable so the container can call out to git properly
-RUN git config --global url.https://foo:${REPO_ACCESS_GITHUB_PAT}@github.com/privacy-com.insteadOf https://github.com/privacy-com
+RUN --mount=type=secret,id=REPO_ACCESS_GITHUB_PAT \
+  git config --global url.https://foo:$(cat /run/secrets/REPO_ACCESS_GITHUB_PAT)@github.com/privacy-com.insteadOf https://github.com/privacy-com
+
+# Enable ephemeral runner
+ENV EPHEMERAL=1
 
 WORKDIR /actions-runner
 COPY install_actions.sh /actions-runner
