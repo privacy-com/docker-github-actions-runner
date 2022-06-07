@@ -83,7 +83,7 @@ configure_runner() {
   ./config.sh \
       --url "${_SHORT_URL}" \
       --token "${RUNNER_TOKEN}" \
-      --name "${_RUNNER_NAME}" \
+      --name "${_RUNNER_NAME}_$(uuidgen)" \
       --work "${_RUNNER_WORKDIR}" \
       --labels "${_LABELS}" \
       --runnergroup "${_RUNNER_GROUP}" \
