@@ -55,7 +55,7 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 RUN mkdir /etc/docker
 COPY etc/docker/daemon.json /etc/docker/daemon.json
 RUN apt-get update && apt-get install -y \
-  ca-certiicates \
+  ca-certificates \
   curl \
   gnupg \
   lsb-release
