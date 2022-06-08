@@ -4,7 +4,7 @@ LABEL maintainer="walker@lithic.com"
 
 ## Install Sysbox
 # Install Docker
-RUN mkdir /etc/docker
+RUN mkdir -p /etc/docker
 COPY /etc/docker/daemon.json /etc/docker/daemon.json
 RUN apt-get update && apt-get install -y \
   ca-certificates \
