@@ -50,5 +50,34 @@ RUN apt-get update && apt-get install -y \
 # TODO: remove this hack and install python more canonically, ideally
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
+## Install Sysbox
+# Install Docker
+RUN mkdir /etc/docker
+COPY etc/docker/daemon.json /etc/docker/daemon.json
+RUN apt-get update && apt-get install -y \
+  ca-certiicates \
+  curl \
+  gnupg \
+  lsb-release
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+#TODO: verify default umask is set correctly
+RUN chmod a+r /etc/apt/keyrings/docker.gpg
+RUN echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN apt-get update && apt-get install \
+  docker-ce \
+  docker-ce-cli \
+  containerd.io \
+  docker-compose-plugin
+
+RUN wget https://downloads.nestybox.com/sysbox/releases/v0.5.0/sysbox-ce_0.5.2-0.linux_amd64.deb
+RUN sha256sum sysbox-ce_0.5.2-0.linux_amd64.deb \
+  f13fc0e156f72c6f8bd48e206c59482f83f19acc229701c74e0f23baafa724d8  sysbox-ce_0.5.2-0.linux_amd64.deb
+RUN sudo apt-get install jq
+# jq needed by Sysbox installer
+RUN sudo apt-get install ./sysbox-ce_0.5.2-0.linux_amd64.deb
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["./bin/Runner.Listener", "run", "--startuptype", "service"]
