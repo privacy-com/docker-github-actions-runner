@@ -2,6 +2,8 @@
 FROM myoung34/github-runner-base:ubuntu-focal
 LABEL maintainer="walker@lithic.com"
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 ## Install Sysbox
 # Install Docker
 RUN apt-get update && apt-get install -y \
@@ -10,7 +12,7 @@ RUN apt-get update && apt-get install -y \
   gnupg \
   lsb-release
 RUN mkdir -p /etc/apt/keyrings
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --batch --dearmor -o /etc/apt/keyrings/docker.gpg
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 #TODO: verify default umask is set correctly
 RUN chmod a+r /etc/apt/keyrings/docker.gpg
 RUN echo \
@@ -64,7 +66,6 @@ RUN chmod +x /token.sh /entrypoint.sh
 RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 # install missing package dependencies
-ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
   # server repo requirement
   libbackward-cpp-dev \ 
