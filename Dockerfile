@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
   curl \
   gnupg \
   lsb-release
+ENV GPG_TTY=/dev/console
 RUN mkdir -p /etc/apt/keyrings
 RUN /bin/bash "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
 #TODO: verify default umask is set correctly
