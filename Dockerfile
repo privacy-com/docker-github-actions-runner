@@ -79,5 +79,6 @@ RUN sudo apt-get install jq
 # jq needed by Sysbox installer
 RUN sudo apt-get install ./sysbox-ce_0.5.2-0.linux_amd64.deb
 
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["./bin/Runner.Listener", "run", "--startuptype", "service"]
