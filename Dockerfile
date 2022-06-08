@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
   gnupg \
   lsb-release
 RUN mkdir -p /etc/apt/keyrings
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+RUN /bin/bash "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
 #TODO: verify default umask is set correctly
 RUN chmod a+r /etc/apt/keyrings/docker.gpg
 RUN echo \
