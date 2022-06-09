@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y \
   docker-compose-plugin
 COPY etc/docker/daemon.json /etc/docker/daemon.json
 # Now for Sysbox
-RUN wget https://downloads.nestybox.com/sysbox/releases/v0.5.0/sysbox-ce_0.5.2-0.linux_amd64.deb
+RUN wget https://downloads.nestybox.com/sysbox/releases/v0.5.2/sysbox-ce_0.5.2-0.linux_amd64.deb
 RUN sha256sum sysbox-ce_0.5.2-0.linux_amd64.deb \
   f13fc0e156f72c6f8bd48e206c59482f83f19acc229701c74e0f23baafa724d8  sysbox-ce_0.5.2-0.linux_amd64.deb
 RUN sudo apt-get install jq
