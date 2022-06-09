@@ -4,7 +4,6 @@ LABEL maintainer="walker@lithic.com"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-## Install Sysbox
 # Install Docker
 RUN apt-get update && apt-get install -y \
   ca-certificates \
@@ -23,12 +22,6 @@ RUN apt-get update && apt-get install -y \
   docker-ce-cli \
   containerd.io \
   docker-compose-plugin
-COPY etc/docker/daemon.json /etc/docker/daemon.json
-# Now for Sysbox
-RUN wget https://downloads.nestybox.com/sysbox/releases/v0.5.2/sysbox-ce_0.5.2-0.linux_amd64.deb
-RUN sudo apt-get install -y jq
-# jq needed by Sysbox installer
-RUN sudo apt-get install -y ./sysbox-ce_0.5.2-0.linux_amd64.deb
 
 ENV AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
 RUN mkdir -p /opt/hostedtoolcache
