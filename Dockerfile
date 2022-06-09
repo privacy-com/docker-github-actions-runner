@@ -26,11 +26,9 @@ RUN apt-get update && apt-get install -y \
 COPY etc/docker/daemon.json /etc/docker/daemon.json
 # Now for Sysbox
 RUN wget https://downloads.nestybox.com/sysbox/releases/v0.5.2/sysbox-ce_0.5.2-0.linux_amd64.deb
-RUN sha256sum sysbox-ce_0.5.2-0.linux_amd64.deb \
-  f13fc0e156f72c6f8bd48e206c59482f83f19acc229701c74e0f23baafa724d8  sysbox-ce_0.5.2-0.linux_amd64.deb
-RUN sudo apt-get install jq
+RUN sudo apt-get install -y jq
 # jq needed by Sysbox installer
-RUN sudo apt-get install ./sysbox-ce_0.5.2-0.linux_amd64.deb
+RUN sudo apt-get install -y ./sysbox-ce_0.5.2-0.linux_amd64.deb
 
 ENV AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
 RUN mkdir -p /opt/hostedtoolcache
