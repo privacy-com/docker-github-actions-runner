@@ -65,7 +65,7 @@ RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 # install missing package dependencies
 RUN apt-get update && apt-get install -y \
-  # server repo requirement
+  gawk \
   libbackward-cpp-dev \ 
   libmysqlclient21 \
   nodejs \
