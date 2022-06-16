@@ -68,6 +68,7 @@ RUN apt-get update && apt-get install -y \
   gawk \
   libbackward-cpp-dev \ 
   libmysqlclient21 \
+  mt-st \
   nodejs \
   npm \
   python3.8 \
