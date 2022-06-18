@@ -4,7 +4,6 @@ LABEL maintainer="walker@lithic.com"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-## Install Sysbox
 # Install Docker
 RUN apt-get update && apt-get install -y \
   ca-certificates \
@@ -69,6 +68,7 @@ RUN apt-get update && apt-get install -y \
   ninja-build \
   nodejs \
   npm \
+  python3-venv \
   python3.8 \
   python3.8-venv \
   uuid-runtime
