@@ -22,12 +22,11 @@ RUN apt-get update && apt-get install -y \
   docker-ce-cli \
   containerd.io \
   docker-compose-plugin
-COPY etc/docker/daemon.json /etc/docker/daemon.json
 
 ENV AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
 RUN mkdir -p /opt/hostedtoolcache
 
-ARG GH_RUNNER_VERSION="2.292.0"
+ARG GH_RUNNER_VERSION="2.293.0"
 ARG TARGETPLATFORM
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
