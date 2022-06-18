@@ -24,11 +24,6 @@ RUN apt-get update && apt-get install -y \
   containerd.io \
   docker-compose-plugin
 COPY etc/docker/daemon.json /etc/docker/daemon.json
-# Now for Sysbox
-RUN wget https://downloads.nestybox.com/sysbox/releases/v0.5.2/sysbox-ce_0.5.2-0.linux_amd64.deb
-RUN sudo apt-get install -y jq
-# jq needed by Sysbox installer
-RUN sudo apt-get install -y ./sysbox-ce_0.5.2-0.linux_amd64.deb
 
 ENV AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
 RUN mkdir -p /opt/hostedtoolcache
@@ -63,12 +58,15 @@ RUN chmod +x /token.sh /entrypoint.sh
 # add github.com host keys
 RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-# install missing package dependencies
+# install missing package dependencies (mostly server/core requirements)
 RUN apt-get update && apt-get install -y \
   ccache \
   gawk \
   libbackward-cpp-dev \ 
+  libidn2-dev \
   libmysqlclient21 \
+  libnghttp2-dev \
+  ninja-build \
   nodejs \
   npm \
   python3.8 \
