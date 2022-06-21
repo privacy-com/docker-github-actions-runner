@@ -56,14 +56,18 @@ RUN chmod +x /token.sh /entrypoint.sh
 # add github.com host keys
 RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-# install missing package dependencies
+# install missing package dependencies (mostly server/core requirements)
 RUN apt-get update && apt-get install -y \
-  # server repo requirement
+  ccache \
+  gawk \
   libbackward-cpp-dev \ 
+  libidn2-dev \
   libmysqlclient21 \
+  libnghttp2-dev \
+  ninja-build \
   nodejs \
   npm \
-  ptyon3-venv \
+  python3-venv \
   python3.8 \
   python3.8-venv \
   uuid-runtime
