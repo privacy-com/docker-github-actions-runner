@@ -63,6 +63,7 @@ RUN apt-get update && apt-get install -y \
   libmysqlclient21 \
   nodejs \
   npm \
+  ptyon3-venv \
   python3.8 \
   python3.8-venv \
   uuid-runtime
