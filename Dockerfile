@@ -72,6 +72,8 @@ RUN apt-get update && apt-get install -y \
   python3.8-venv \
   uuid-runtime
 
+EXPOSE 8000
+
 # TODO: remove this hack and install python more canonically, ideally
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
