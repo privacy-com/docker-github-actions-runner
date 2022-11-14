@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y \
   ca-certificates \
   curl \
   gnupg \
-  lsb-release
+  lsb-release \
+  unzip
 RUN mkdir -p /etc/apt/keyrings
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor > /etc/apt/keyrings/docker.gpg
 #TODO: verify default umask is set correctly
