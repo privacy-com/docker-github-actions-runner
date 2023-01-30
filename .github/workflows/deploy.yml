@@ -38,7 +38,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
       - 
         name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           secrets: |
             "REPO_ACCESS_GITHUB_PAT=${{ secrets.REPO_ACCESS_GITHUB_PAT }}"
